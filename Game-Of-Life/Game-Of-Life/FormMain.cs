@@ -14,16 +14,34 @@ namespace Game_Of_Life
     {
         private const int WIDTH = 640;
         private const int HEIGHT = 360;
+        private const int FPS = 24;
 
         private Bitmap bm;
         private GameOfLife gol;
+        private Timer fps;
 
+        // Default constuctor
         public FormMain()
         {
             InitializeComponent();
 
+            // Initialize
             bm = new Bitmap(WIDTH, HEIGHT);
             gol = new GameOfLife(WIDTH, HEIGHT);
+            fps = new Timer();
+            fps.Interval = 1000 / FPS;
+            fps.Tick += Fps_Tick;
+            fps.Enabled = true;
+        }
+
+        // Timer tick
+        private void Fps_Tick(object sender, EventArgs e)
+        {
+            // Update the cells
+            gol.Update();
+
+            // Call the draw event
+            canvas.Invalidate();
         }
 
         // Draw event

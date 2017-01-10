@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace Game_Of_Life
 {
+    public enum State { DEATH, LIVE };
+
     public class Cell
     {
         private int x;
         private int y;
         private readonly int dim;
-        private State state;
-
-        public enum State { DEATH, BIRTH, LIVE };
+        public State CurrentState { get; set; }
 
         public Cell(int x, int y, int dim, State initialState)
         {
@@ -22,28 +22,25 @@ namespace Game_Of_Life
             this.y = y;
             this.dim = dim;
 
-            state = initialState;
+            CurrentState = initialState;
         }
 
-        public void NewState(State s)
+        public void Draw(Graphics g)
         {
-            state = s;
-        }
-
-        public void Draw(Graphics g)    // TODO: test with ref param
-        {
-            switch (state)
+            switch (CurrentState)
             {
                 case State.DEATH:
                     g.FillRectangle(Brushes.Black, x, y, dim, dim);
-                    break;
-                case State.BIRTH:
-                    g.FillRectangle(Brushes.White, x, y, dim, dim);
                     break;
                 case State.LIVE:
                     g.FillRectangle(Brushes.White, x, y, dim, dim);
                     break;
             }
+        }
+
+        public int GetValue()
+        {
+            return CurrentState == State.DEATH ? 0 : 1;
         }
     }
 }
